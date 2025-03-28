@@ -7,7 +7,7 @@
     <meta name="description" content="Contact Pro Fleet Care Simcoe County for mobile rust control services. We serve Barrie, Orillia, Midland, and surrounding areas in Simcoe County.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="/profleetcare-simcoe/css/styles.css">
 </head>
 <body>
     <!-- Top Bar -->
@@ -27,8 +27,8 @@
         <div class="container">
             <div class="header-main">
                 <div class="logo">
-                    <a href="../index.html">
-                        <img src="../images/profleetcare_logo.png" alt="Pro Fleet Care Simcoe County Logo">
+                    <a href="/profleetcare-simcoe/">
+                        <img src="/profleetcare-simcoe/images/profleetcare_logo.png" alt="Pro Fleet Care Simcoe County Logo">
                     </a>
                 </div>
                 <button class="nav-toggle" id="navToggle">
@@ -36,25 +36,190 @@
                 </button>
                 <nav id="mainNav">
                     <ul>
-                        <li><a href="../index.html">Home</a></li>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="services.html">Services</a></li>
-                        <li><a href="industries.html">Industries</a></li>
-                        <li><a href="process.html">Process</a></li>
-                        <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="/profleetcare-simcoe/">Home</a></li>
+                        <li><a href="/profleetcare-simcoe/pages/about.html">About Us</a></li>
+                        <li><a href="/profleetcare-simcoe/pages/services.html">Services</a></li>
+                        <li><a href="/profleetcare-simcoe/pages/industries.html">Industries</a></li>
+                        <li><a href="/profleetcare-simcoe/pages/process.html">Process</a></li>
+                        <li><a href="/profleetcare-simcoe/pages/faq.html">FAQ</a></li>
+                        <li><a href="/profleetcare-simcoe/pages/contact.html">Contact</a></li>
                     </ul>
                 </nav>
             </div>
         </div>
     </header>
 
-    <!-- Contact Content -->
+    <!-- Main Content -->
     <main>
-        <!-- Contact sections here -->
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>Contact Us</h1>
+                <p>Get in touch for professional rust control services</p>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-grid">
+                    <!-- Contact Information -->
+                    <div class="contact-info-card">
+                        <h2>Contact Information</h2>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    <h3>Phone</h3>
+                                    <p><a href="tel:1-866-RUST-OIL">1-866-RUST-OIL</a></p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <div>
+                                    <h3>Email</h3>
+                                    <p><a href="mailto:simcoe@profleetcare.com">simcoe@profleetcare.com</a></p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>
+                                    <h3>Service Area</h3>
+                                    <p>Serving all of Simcoe County</p>
+                                    <ul class="service-areas">
+                                        <li>Barrie</li>
+                                        <li>Orillia</li>
+                                        <li>Collingwood</li>
+                                        <li>Midland</li>
+                                        <li>And surrounding areas</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <h3>Hours of Operation</h3>
+                                    <p>Monday - Friday: 8:00 AM - 6:00 PM</p>
+                                    <p>Saturday: By appointment</p>
+                                    <p>Sunday: Closed</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div class="contact-form-card">
+                        <h2>Send Us a Message</h2>
+                        <form id="contactForm" action="#" method="POST">
+                            <div class="form-group">
+                                <label for="name">Name *</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="service">Service Interest</label>
+                                <select id="service" name="service">
+                                    <option value="">Select a Service</option>
+                                    <option value="rust-control">Rust Control</option>
+                                    <option value="fleet-maintenance">Fleet Maintenance</option>
+                                    <option value="rust-prevention">Rust Prevention</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message *</label>
+                                <textarea id="message" name="message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="submit-button">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Map Section -->
+        <section class="map-section">
+            <div class="container">
+                <h2>Service Area</h2>
+                <div class="map-container">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d357157.4888555193!2d-79.89127544179685!3d44.51171099999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4d2ae9b385a2aa2b%3A0xc7d2ec8a30c1949!2sSimcoe%20County%2C%20ON!5e0!3m2!1sen!2sca!4v1647887421496!5m2!1sen!2sca"
+                        width="100%"
+                        height="450"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <script src="../js/main.js"></script>
-    <script src="../js/chatbot.js"></script>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><a href="tel:1-866-RUST-OIL"><i class="fas fa-phone"></i> 1-866-RUST-OIL</a></li>
+                        <li><a href="mailto:simcoe@profleetcare.com"><i class="fas fa-envelope"></i> simcoe@profleetcare.com</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> Serving all of Simcoe County</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="/profleetcare-simcoe/pages/services.html">Our Services</a></li>
+                        <li><a href="/profleetcare-simcoe/pages/process.html">Our Process</a></li>
+                        <li><a href="/profleetcare-simcoe/pages/contact.html">Request Quote</a></li>
+                        <li><a href="/profleetcare-simcoe/pages/faq.html">FAQs</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Service Areas</h3>
+                    <ul>
+                        <li>Barrie</li>
+                        <li>Orillia</li>
+                        <li>Collingwood</li>
+                        <li>Midland</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Pro Fleet Care Simcoe County. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot -->
+    <button id="toggleChat" aria-label="Toggle Chat">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <div id="chatContainer">
+        <div id="chatHeader">
+            <h3>Chat with Rusty</h3>
+            <button id="closeChat" aria-label="Close Chat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="chatMessages"></div>
+        <div id="chatInput">
+            <input type="text" id="userInput" placeholder="Type your message...">
+            <button id="sendButton">Send</button>
+        </div>
+    </div>
+
+    <script src="/profleetcare-simcoe/js/main.js"></script>
+    <script src="/profleetcare-simcoe/js/chatbot.js"></script>
 </body>
 </html>
