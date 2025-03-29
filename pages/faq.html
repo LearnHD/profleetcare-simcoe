@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Pro Fleet Care Simcoe County</title>
+    <meta name="description" content="Frequently asked questions about Pro Fleet Care Simcoe County's mobile rust control services, process, and benefits.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .faq-item {
+            margin-bottom: var(--spacing-lg);
+            border-bottom: 1px solid #ddd;
+            padding-bottom: var(--spacing-lg);
+        }
+        .faq-question {
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: var(--spacing-sm);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-question:hover {
+            color: var(--secondary-blue);
+        }
+        .faq-answer {
+            display: none;
+            padding-left: var(--spacing-md);
+        }
+        .faq-answer.active {
+            display: block;
+        }
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+        .faq-icon.active {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="contact-info">
+                <a href="tel:1-866-RUST-OIL"><i class="fas fa-phone"></i> 1-866-RUST-OIL</a>
+            </div>
+            <div class="login">
+                <a href="#"><i class="fas fa-user"></i> Sign In</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-main">
+                <div class="logo">
+                    <a href="../index.html">
+                        <img src="../images/profleetcare_logo.png" alt="Pro Fleet Care Simcoe County Logo">
+                    </a>
+                </div>
+                <button class="nav-toggle" id="navToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav id="mainNav">
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="industries.html">Industries</a></li>
+                        <li><a href="process.html">Process</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Title -->
+    <section class="page-title" style="background-color: var(--primary-blue); color: var(--white); padding: var(--spacing-xl) 0;">
+        <div class="container">
+            <h1>Frequently Asked Questions</h1>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section>
+        <div class="container">
+            <div class="section-title">
+                <h2>Common Questions About Our Rust Control Services</h2>
+            </div>
+            
+            <div class="faq-container">
+                <!-- General Questions -->
+                <h3>General Questions</h3>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        What is Pro Fleet Care?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Pro Fleet Care is a mobile rust control service provider with over 35 years of experience in the industry. We specialize in providing on-site rust protection for vehicles and equipment, coming directly to your location to apply our unique two-step rust control process.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        What areas do you serve in Simcoe County?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Pro Fleet Care Simcoe County proudly serves all of Simcoe County including Barrie, Orillia, Collingwood, Midland, Bradford, Innisfil, and surrounding areas. Our mobile service allows us to come to your location anywhere in the county.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Who owns Pro Fleet Care Simcoe County?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Pro Fleet Care Simcoe County is owned and operated by Renee Marchildon and Jan Borkowski. Having owned their own construction business, they understand the importance of quality workmanship and customer service. They are dedicated to providing exceptional rust control services to customers throughout Simcoe County.</p>
+                    </div>
+                </div>
+                
+                <!-- Service Questions -->
+                <h3>Service Questions</h3>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How does your rust control process work?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our rust control process involves a unique two-step application:</p>
+                        <ol>
+                            <li><strong>ROC 40 (Light Oil):</strong> Penetrates seams and hard-to-reach areas, ideal for interior panels and enclosed spaces.</li>
+                            <li><strong>ROC 50 (Drip-less Oil):</strong> Provides extra protection in high traffic areas such as frame rails and wheel wells.</li>
+                        </ol>
+                        <p>This comprehensive approach ensures complete protection from undercarriage to roof line, creating a barrier that neutralizes the harmful effects of salt and moisture.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Do you come to my location?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! We are a mobile service that comes directly to your location, whether it's your home, business, farm, or municipal facility. This eliminates the need for you to transport your vehicles or equipment, saving you time and reducing downtime.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        What types of vehicles and equipment do you service?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We service a wide range of vehicles and equipment including:</p>
+                        <ul>
+                            <li>Farm equipment (tractors, combines, etc.)</li>
+                            <li>Emergency vehicles (fire trucks, ambulances, etc.)</li>
+                            <li>Passenger transportation (buses, shuttles, etc.)</li>
+                            <li>Recreational vehicles (RVs, campers, etc.)</li>
+                            <li>Snow removal and construction equipment</li>
+                            <li>Beach equipment</li>
+                            <li>Personal vehicles and trucks</li>
+                            <li>And much more!</li>
+                        </ul>
+                        <p>If it has metal components that need protection from rust, we can service it!</p>
+                    </div>
+                </div>
+                
+                <!-- Benefits Questions -->
+                <h3>Benefits Questions</h3>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        What are the benefits of your rust control service?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>The benefits of our rust control service include:</p>
+                        <ul>
+                            <li>Extended vehicle and equipment life</li>
+                            <li>Reduced repair costs (save $6 for every $1 spent)</li>
+                            <li>Less downtime due to maintenance issues</li>
+                            <li>Protection against pre-emergent salts that cause severe body rot</li>
+                            <li>Deterrent for rodents and pests that chew wires</li>
+                            <li>Maintained professional appearance</li>
+                            <li>Convenience of on-site service</li>
+                            <li>Higher resale value</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How is your service different from other rust protection options?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our service is different in several key ways:</p>
+                        <ul>
+                            <li><strong>Mobile Service:</strong> We come to you, saving you time and reducing equipment downtime.</li>
+                            <li><strong>Two-Step Process:</strong> Our unique application ensures comprehensive protection.</li>
+                            <li><strong>Superior Penetration:</strong> Our products penetrate hard-to-reach areas that other products can't access.</li>
+                            <li><strong>Gravity Defying:</strong> Our product creeps upwards, sideways, and downward for complete coverage.</li>
+                            <li><strong>Resealing Properties:</strong> Continues to creep and reseal areas that become exposed.</li>
+                            <li><strong>Pest Deterrent:</strong> Deters rodents from chewing wires and causing damage.</li>
+                            <li><strong>Experienced Applicators:</strong> Our service providers are trained professionals with a vested interest in your satisfaction.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Pricing and Scheduling Questions -->
+                <h3>Pricing and Scheduling Questions</h3>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How much does your service cost?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Pricing depends on the type and size of vehicle or equipment being serviced. We provide free quotes tailored to your specific needs. Contact us at 705-627-7941 (Jan) or 705-627-7521 (Renee) for a personalized quote, or fill out our contact form on the website.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How do I schedule an appointment?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Scheduling an appointment is easy! You can:</p>
+                        <ul>
+                            <li>Call Jan at 705-627-7941</li>
+                            <li>Call Renee at 705-627-7521</li>
+                            <li>Email us at simcoecounty@profleetcare.com</li>
+                            <li>Fill out the contact form on our website</li>
+                        </ul>
+                        <p>We offer flexible scheduling, including evenings and weekends at no additional cost, to work around your schedule.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How often should I have rust control applied?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>For optimal protection, we recommend annual applications of our rust control treatment. This is especially important in areas with harsh winters and heavy road salt usage, like Simcoe County. Annual applications ensure continuous protection against corrosion and help extend the lifespan of your vehicles and equipment.</p>
+                    </div>
+                </div>
+                
+                <!-- Application Questions -->
+                <h3>Application Questions</h3>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Do I need to prepare my vehicle before service?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>For best results, your vehicle should be clean and dry before application. However, we understand this isn't always possible, especially for farm and construction equipment. We can work with you to determine the best approach for your specific situation. No special preparation is required on your part.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How long does the application process take?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>The application time varies depending on the size and type of vehicle or equipment. On average, a standard vehicle takes approximately 30-45 minutes for the complete two-step application. Larger vehicles or equipment may take longer. We'll provide you with a time estimate when scheduling your appointment.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Can I use my vehicle right away after application?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, you can use your vehicle immediately after our rust control application. There is no drying or curing time required. However, we recommend avoiding car washes for a few days after application to allow the product to fully penetrate and settle.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: var(--spacing-xl);">
+                <p>Don't see your question answered here? Contact us directly!</p>
+                <a href="contact.html" class="cta-button">Contact Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>Pro Fleet Care Simcoe County</h3>
+                    <p>A franchise of Pro Fleet Care</p>
+                    <p>Mobile rust control services throughout Simcoe County</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="industries.html">Industries</a></li>
+                        <li><a href="process.html">Process</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Information</h3>
+                    <p><strong>Jan's Cell:</strong> <a href="tel:705-627-7941">705-627-7941</a></p>
+                    <p><strong>Renee's Cell:</strong> <a href="tel:705-627-7521">705-627-7521</a></p>
+                    <p><strong>Email:</strong> <a href="mailto:simcoecounty@profleetcare.com">simcoecounty@profleetcare.com</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Pro Fleet Care Simcoe County - All Rights Reserved</p>
+                <p>Pro Fleet Care Simcoe County is a franchise of Pro Fleet Care</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot Widget -->
+    <div class="chatbot-widget">
+        <div class="chatbot-button" id="chatbotButton">
+            <i class="fas fa-comment"></i>
+        </div>
+        <div class="chatbot-container" id="chatbotContainer">
+            <div class="chatbot-header">
+                <h3>Pro Fleet Care Chat</h3>
+                <span class="chatbot-close" id="chatbotClose">&times;</span>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <!-- Messages will be added here -->
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Type your question...">
+                <button id="chatbotSend">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/chatbot.js"></script>
+    <script>
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.faq-icon');
+            
+            if (answer.classList.contains('active')) {
+                answer.classList.remove('active');
+                icon.classList.remove('active');
+            } else {
+                answer.classList.add('active');
+                icon.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
