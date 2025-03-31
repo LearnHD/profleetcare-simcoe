@@ -40,26 +40,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Form Submission
     const quoteForm = document.getElementById('quoteForm');
     if (quoteForm) {
-        quoteForm.addEventListener('submit', function(event) {
+        quoteForm.addEventListener('submit', async function(event) {
             event.preventDefault();
             
-            // Get form values
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const company = document.getElementById('company').value;
-            const message = document.getElementById('message').value;
+            // Get form data
+            const formData = new FormData(quoteForm);
+            const data = Object.fromEntries(formData.entries());
             
-            // Simple validation
-            if (!firstName || !lastName || !email) {
-                alert('Please fill in all required fields.');
-                return;
+            // Basic form validation
+            for (const [key, value] of Object.entries(data)) {
+                if (!value.trim()) {
+                    alert(`Please fill in the ${key.replace(/([A-Z])/g, ' $1').toLowerCase()} field`);
+                    return;
+                }
             }
-            
-            // In a real implementation, you would send this data to a server
+
+            // Here you would typically send the form data to your server
             // For now, we'll just show a success message
-            alert('Thank you for your inquiry! We will contact you shortly.');
+            alert('Thank you for your inquiry! We will contact you soon.');
             quoteForm.reset();
         });
     }
