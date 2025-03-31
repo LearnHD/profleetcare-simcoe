@@ -2,12 +2,16 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize EmailJS
     emailjs.init("8ufVL98VSoK59ohNH");
+    console.log('EmailJS initialized');
 
     // Handle all forms
     const forms = document.querySelectorAll('form');
+    console.log('Found forms:', forms.length);
+    
     forms.forEach(form => {
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
+            console.log('Form submission started');
             
             // Show loading state
             const submitButton = form.querySelector('button[type="submit"]');
@@ -18,8 +22,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Get form data
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
+            console.log('Form data:', data);
 
             try {
+                console.log('Attempting to send email...');
                 // Send email using EmailJS
                 await emailjs.send(
                     'service_pqtkbxy',
@@ -35,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 );
 
+                console.log('Email sent successfully');
                 // Show success message
                 alert('Thank you for your message! We will contact you soon.');
                 form.reset();

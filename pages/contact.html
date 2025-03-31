@@ -89,27 +89,27 @@
                         <form id="contactForm">
                             <div class="form-group">
                                 <label for="firstName">First Name*</label>
-                                <input type="text" id="firstName" class="form-control" required>
+                                <input type="text" id="firstName" name="firstName" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="lastName">Last Name*</label>
-                                <input type="text" id="lastName" class="form-control" required>
+                                <input type="text" id="lastName" name="lastName" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="email">Email*</label>
-                                <input type="email" id="email" class="form-control" required>
+                                <input type="email" id="email" name="email" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="phone">Phone</label>
-                                <input type="tel" id="phone" class="form-control">
+                                <input type="tel" id="phone" name="phone" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="company">Company Name</label>
-                                <input type="text" id="company" class="form-control">
+                                <input type="text" id="company" name="company" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="subject">Subject</label>
-                                <select id="subject" class="form-control">
+                                <select id="subject" name="subject" class="form-control">
                                     <option value="">Select a Subject</option>
                                     <option value="quote">Request a Quote</option>
                                     <option value="appointment">Schedule an Appointment</option>
@@ -119,7 +119,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="message">Message*</label>
-                                <textarea id="message" class="form-control" required></textarea>
+                                <textarea id="message" name="message" class="form-control" required></textarea>
                             </div>
                             <button type="submit" class="cta-button">Send Message</button>
                         </form>
