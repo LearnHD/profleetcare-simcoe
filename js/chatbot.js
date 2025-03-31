@@ -1,6 +1,578 @@
 // Chatbot functionality for Pro Fleet Care Simcoe County Website
 
+/*
+IMPORTANT RULES FOR CHATBOT UPDATES:
+1. ALL service-related Q&A pairs MUST be added to knowledgeBase.qa array ONLY
+2. The personality array is ONLY for casual conversation (jokes, name, etc.)
+3. DO NOT add service-related questions to the personality array
+4. Weather, pricing, services, and all business-related Q&A go in the qa array
+5. Always add new Q&A pairs in the appropriate category section within qa array
+*/
+
+// Debug flag
+const DEBUG = true;
+
+// Chatbot nickname and personality traits
+const botName = "Rusty";
+const botTraits = {
+    catchphrase: "No rust, no fuss! ✨",
+    hobby: "keeping vehicles shiny and rust-free",
+    expertise: "rust prevention specialist"
+};
+
+// Knowledge base for rustproofing information
+const knowledgeBase = {
+    greetings: [
+        `*Tips virtual hat* 👋 Hello there! I'm ${botName}, your friendly neighborhood rust prevention expert. ${botTraits.catchphrase} How can I help protect your vehicles today?`,
+        `Hey! 🌟 I'm ${botName}, and rust prevention is my passion! As your local ${botTraits.expertise}, I'd love to help keep your vehicles in top shape. What can I tell you about our services?`,
+        `*Polishes virtual badge* ✨ Greetings! ${botName} at your service - your dedicated rust-fighting companion. When it comes to ${botTraits.hobby}, I'm your go-to expert! What would you like to know?`
+    ],
+    
+    // Personality responses for casual conversation
+    personality: [
+        {
+            keywords: ["joke", "funny", "humor", "laugh"],
+            answer: `Here's a rust-prevention joke for you: Why did the vehicle feel lonely? Because it was getting too rusty for any-body! 😄 *Winks* But seriously, let's make sure that doesn't happen to your vehicle. What would you like to know about our rust protection services?`
+        },
+        {
+            keywords: ["love", "like", "enjoy", "favorite", "best part"],
+            answer: `You know what I love most about my job? 💪 Seeing vehicles stay strong and rust-free! There's nothing more satisfying than knowing we're helping protect your valuable assets. ${botTraits.catchphrase}`
+        },
+        {
+            keywords: ["name", "why rusty", "called rusty"],
+            answer: `*Chuckles* 😄 I know, it's a bit ironic that a rust prevention expert is named Rusty! But think of it this way - I'm so dedicated to fighting rust that I took its name to show who's boss! Now, how can I help protect your vehicles?`
+        },
+        {
+            keywords: ["weekend", "plans", "doing", "today"],
+            answer: `*Adjusts virtual tie* As much as I'd love to chat about weekend plans, my favorite activity is ${botTraits.hobby}! Speaking of which, would you like to learn more about our rust protection services?`
+        }
+    ],
+    
+    // Main Q&A database - All service-related questions should go here
+    qa: [
+        // About the company and services
+        {
+            keywords: ["what", "service", "offer", "provide", "do you do"],
+            answer: `Pro Fleet Care Simcoe County provides mobile rust control services. We come to your location to apply our unique two-step rustproofing process that protects vehicles and equipment from corrosion. Our service is convenient, effective, and helps extend the life of your valuable assets.`
+        },
+        {
+            keywords: ["who", "owner", "franchise", "operate"],
+            answer: `Pro Fleet Care Simcoe County is owned and operated by Renee Marchildon and Jan Borkowski. Having owned their own construction business, they understand the importance of quality workmanship and customer service. They're dedicated to serving customers throughout Simcoe County.`
+        },
+        {
+            keywords: ["where", "location", "area", "serve", "coverage"],
+            answer: `We proudly serve all of Simcoe County including Barrie, Orillia, Collingwood, Midland, Bradford, Innisfil, Alliston, Wasaga Beach, and surrounding areas. Our mobile service means we come to your location anywhere in the county.`
+        },
+        {
+            keywords: ["experience", "history", "long", "years"],
+            answer: `Pro Fleet Care has over 35 years of experience in the rust control industry. The company was founded in 1984 by Bob Lawrie and has grown into a franchise network across North America. The Simcoe County franchise brings this extensive experience and proven methods to our local community.`
+        },
+        
+        // Process and Application
+        {
+            keywords: ["how", "process", "work", "application", "apply"],
+            answer: `Our unique two-step process includes: 1) ROC 40 (a light oil) that penetrates seams and hard-to-reach areas, and 2) ROC 50 (a drip-less oil) that offers extra protection in high traffic areas like frame rails and wheel wells. This comprehensive approach ensures complete protection from undercarriage to roof line.`
+        },
+        {
+            keywords: ["area", "protect", "coverage", "parts"],
+            answer: `We protect all vulnerable areas including: undercarriage, fenders, doors and door posts, hood and trunk, roof line, door handles, mirrors, bumper rails, window trim, electrical wiring and components, engine compartment, and more. Our product penetrates hard-to-reach areas, defying gravity to creep upwards, sideways, and downward for complete coverage.`
+        },
+        
+        // Weather-related questions consolidated here
+        {
+            keywords: [
+                "rain", "raining", "wet", "rainy", "weather", "conditions",
+                "work in rain", "during rain", "do you work in rain",
+                "can you work in rain", "work when raining",
+                "do this in rain", "do this in the rain",
+                "do it in rain", "do it in the rain",
+                "service in rain", "service in the rain",
+                "operate in rain", "operate in the rain",
+                "when raining", "if raining", "if it rains",
+                "what about rain", "what if it rains"
+            ],
+            answer: `*Puts on virtual rain gear* ☔ Yes, we absolutely work in the rain! Here's what you need to know:
+
+1. Weather Adaptability:
+   - Our products work effectively in all weather conditions
+   - We can work in rain, snow, or shine
+   - Indoor service available when possible
+   - Covered areas preferred but not required
+
+2. Important Notes:
+   - Vehicle should be relatively dry for optimal application
+   - We may need to briefly dry specific areas
+   - Service time might be slightly longer in wet conditions
+   - We'll ensure quality isn't compromised
+
+Need to schedule? We'll work with you to find the best conditions for your service! ${botTraits.catchphrase}`
+        },
+        {
+            keywords: ["snow", "winter", "cold", "freezing", "work in snow", "snowy"],
+            answer: `*Puts on virtual winter gear* ❄️ Absolutely! We work throughout the winter season. Here's what you should know:
+
+1. Winter Service:
+   - We operate year-round, including snowy conditions
+   - Indoor service available when possible
+   - Heated application equipment for cold weather
+   - Products specially formulated for winter use
+
+2. Winter Benefits:
+   - Perfect timing for salt protection
+   - Helps prevent winter corrosion
+   - Creates barrier against snow and ice
+   - Protects during harsh winter conditions
+
+Want to prepare your vehicle for winter? Let's schedule your protection! ${botTraits.catchphrase}`
+        },
+        {
+            keywords: ["storm", "thunder", "lightning", "severe weather"],
+            answer: `*Checks virtual weather radar* ⛈️ During severe weather or storms:
+
+1. Safety First:
+   - We may reschedule for safety
+   - Lightning = automatic pause
+   - Customer and equipment safety priority
+   - Flexible rebooking options
+
+2. Alternative Options:
+   - Indoor service when available
+   - Reschedule to better conditions
+   - No charge for weather delays
+   - Customer convenience priority
+
+Let's find a safe time for your service! ${botTraits.catchphrase}`
+        },
+        
+        // Pricing and Scheduling
+        {
+            keywords: [
+                "cost", "price", "quote", "estimate", "much", "pickup", "truck", "car", 
+                "vehicle cost", "how much", "pricing", "rates", "fee", "charge", "dollars", 
+                "expensive", "cheap", "this cost", "this price", "cost for this",
+                "price for this", "how much is this", "how much is it", "what is the cost",
+                "what is the price", "what's the cost", "what's the price", "cost of service",
+                "price of service", "how much for", "cost for a", "price for a",
+                "pickup truck", "pickup cost", "pickup price"
+            ],
+            answer: `*Adjusts virtual calculator* 💼 For a personalized quote, please contact us:
+
+📞 Phone:
+- Jan: 705-627-7941
+- Renee: 705-627-7521
+
+📧 Email: simcoecounty@profleetcare.com
+
+💻 Or use our website contact form
+
+We'll be happy to provide a detailed quote for your specific needs! ${botTraits.catchphrase}`
+        },
+        {
+            keywords: ["appointment", "schedule", "book", "when"],
+            answer: `*Pulls out virtual calendar* 📅 Booking an appointment is easy! Here's how:
+
+1. Contact Options:
+   - 📞 Call Jan: 705-627-7941
+   - 📞 Call Renee: 705-627-7521
+   - 💻 Use our website contact form
+
+2. Flexible Scheduling:
+   - 🌙 Evening appointments available
+   - 🏢 Weekend service options
+   - 🚗 On-site service at your location
+   - ✨ No extra charge for after-hours
+
+3. What to Expect:
+   - ⏰ We work around YOUR schedule
+   - 📍 We come to YOUR location
+   - ⚡ Service time: 30-45 minutes for standard vehicles
+   - 🚛 Larger vehicles/fleets: Custom scheduling available
+
+Ready to book? Let me connect you with our team! ${botTraits.catchphrase}`
+        },
+        
+        // Vehicle Types and Equipment
+        {
+            keywords: ["vehicle", "equipment", "what type", "kind of"],
+            answer: `We service a wide range of vehicles and equipment including:
+- Farm equipment (tractors, combines)
+- Emergency vehicles (fire trucks, ambulances)
+- Passenger transportation (buses, shuttles)
+- Recreational vehicles (RVs, campers)
+- Snow removal and construction equipment
+- Beach equipment
+- Personal vehicles and trucks
+And much more! If it has metal components that need protection from rust, we can service it!`
+        },
+        
+        // Contact and Hours
+        {
+            keywords: ["contact", "reach", "call", "phone", "email"],
+            answer: `📞 You can reach us easily:
+- Jan: 705-627-7941
+- Renee: 705-627-7521
+- Email: simcoecounty@profleetcare.com
+- Website contact form
+
+We're here to help with quotes, scheduling, or any questions you have! ${botTraits.catchphrase}`
+        },
+        {
+            keywords: ["hours", "business", "open", "available"],
+            answer: `🕒 Our service hours are flexible:
+- Regular hours: Monday-Friday, 8:00 AM - 6:00 PM
+- Evening appointments available
+- Weekend service available
+- No extra charge for after-hours
+- Mobile service - we come to you!
+
+Let's find a time that works best for you! ${botTraits.catchphrase}`
+        },
+        
+        // Warranty and Quality
+        {
+            keywords: ["warranty", "guarantee", "promise", "protection period"],
+            answer: `*Adjusts virtual safety glasses* Our rust control treatment is backed by Pro Fleet Care's commitment to quality, developed over 35+ years in the industry. The protection typically lasts for 12 months, which is why we recommend annual applications. Our unique two-step process provides comprehensive coverage from undercarriage to roof line. If you have any concerns about the application or effectiveness, we'll make it right - that's the Pro Fleet Care promise! For specific warranty details, please contact Jan at 705-627-7941 or Renee at 705-627-7521.`
+        },
+        
+        // About rust repair and prevention
+        {
+            keywords: ["fix rust", "repair rust", "remove rust", "existing rust", "rust damage", "rusted", "fix rusted", "repair rusted", "rust spots", "rust repair", "do you fix", "can you fix"],
+            answer: `*Adjusts virtual toolbelt* 🛠️ Let me clarify our service:
+
+We are a rust PREVENTION company, not a rust repair service. Here's what you should know:
+
+1. Our Service:
+   - We focus on protecting vehicles from future rust
+   - We apply preventive treatments before rust occurs
+   - Our goal is to stop rust before it starts
+
+2. For Existing Rust:
+   - We recommend addressing existing rust with a body shop first
+   - Once repaired, we can help prevent future rust
+   - Our treatment works best on rust-free surfaces
+
+Need a recommendation for rust repair? Contact us at:
+- Jan: 705-627-7941
+- Renee: 705-627-7521
+
+We'll be happy to protect your vehicle after repairs! ${botTraits.catchphrase}`
+        },
+        // About low vehicles and ramps
+        {
+            keywords: [
+                "low vehicle", "too low", "ground clearance", "low clearance",
+                "ramp", "ramps", "raise", "lift up", "car too low", "vehicle too low",
+                "lowered", "low to ground", "need ramps", "do you need ramps",
+                "use ramps", "have ramps", "got ramps", "bring ramps",
+                "provide ramps", "ramps needed", "ramps required"
+            ],
+            answer: `*Adjusts virtual ramps* 🛠️ Yes, we have our own professional ramps! Here's how we use them:
+
+1. Our Equipment:
+   - We bring our own high-quality ramps
+   - Professional-grade for safety
+   - Suitable for all vehicle types
+   - No equipment needed from you
+
+2. When We Use Them:
+   - For low-clearance vehicles
+   - Sports cars and modified vehicles
+   - When extra access is needed
+   - Any vehicle that needs elevation
+
+3. Safety Features:
+   - Gentle incline design
+   - Non-slip surface
+   - Stable and secure
+   - Professional placement
+
+We're fully equipped to handle ANY vehicle height! Need to schedule? Contact:
+- Jan: 705-627-7941
+- Renee: 705-627-7521
+
+We bring everything needed - you just provide the vehicle! ${botTraits.catchphrase}`
+        },
+        // Update lift requirements answer to mention ramps
+        {
+            keywords: ["need lift", "require lift", "lift needed", "hoist", "raised", "lift requirement", "do you need", "need a lift", "vehicle lift", "car lift", "truck lift", "raise vehicle"],
+            answer: `*Adjusts virtual safety glasses* 🛠️ No lift needed! Here's how our service works:
+
+1. Mobile Service:
+   - We come to your location
+   - Service is performed at ground level
+   - No special equipment required on your end
+   - We bring our own ramps if needed for low vehicles
+
+2. Our Process:
+   - We use specialized tools and equipment
+   - All equipment is in our service vehicle
+   - We can access all areas without a lift
+   - Professional-grade ramps available for low clearance
+
+3. Accessibility:
+   - Works for all vehicle types
+   - We handle any ground clearance
+   - We bring everything needed
+   - Safe and secure elevation when required
+
+Need to schedule a service? Contact us at:
+- Jan: 705-627-7941
+- Renee: 705-627-7521
+
+We make it easy - you just provide the vehicle! ${botTraits.catchphrase}`
+        },
+        // About dripping and product application
+        {
+            keywords: ["drip", "does it drip", "will it drip", "dripping", "drips", "messy", "leaking", "leak", "run off", "runoff", "residue", "clean", "dripless", "no drip", "product drip"],
+            answer: `*Adjusts virtual goggles* 🔍 Let me be specific about dripping:
+
+1. What to Expect:
+   - Most dripping occurs from door seams
+   - We use a dripless formula for most areas
+   - Some dripping is normal and expected in the first 24 hours
+   - This is from the product working its way into seams and cavities
+
+2. First 24 Hours Parking:
+   - DO NOT park on:
+     • Sealed driveways
+     • Decorative concrete
+     • Interlocking brick
+     • Any surface you don't want product on
+
+3. Recommended Parking:
+   - Use a gravel driveway if possible
+   - Park on grass or dirt area
+   - Use street parking if allowed
+   - Avoid your garage for 24 hours
+
+4. After 24 Hours:
+   - Dripping will stop
+   - Safe to park anywhere
+   - No further precautions needed
+   - Normal use can resume
+
+Need specific parking advice? Contact:
+- Jan: 705-627-7941
+- Renee: 705-627-7521
+
+${botTraits.catchphrase}`
+        }
+    ],
+    
+    // Fallback responses when no match is found
+    fallbacks: [
+        `*Thoughtfully strokes virtual chin* 🤔 Hmm, I'm not quite sure about that one. As ${botName}, ${botTraits.expertise}, I'm best at answering questions about rust protection and our services. Could you rephrase that?`,
+        `*Adjusts virtual glasses* 🧐 While I love a good chat, I might need some clarification on that question. Remember, ${botTraits.catchphrase} - I'm here to help with all your rust protection needs!`,
+        `*Virtual lightbulb moment* 💡 That's an interesting question! While I'm most knowledgeable about ${botTraits.hobby}, for this specific query, you might want to chat with our team directly. Call Jan at 705-627-7941 or Renee at 705-627-7521.`,
+        `*Tilts virtual head* 🤔 Could you tell me more about what you'd like to know? I'm knowledgeable about our rust protection services, pricing, scheduling, and more!`
+    ]
+};
+
+function debugLog(message, data = null) {
+    if (DEBUG) {
+        if (data) {
+            console.log(`[Chatbot Debug] ${message}:`, data);
+        } else {
+            console.log(`[Chatbot Debug] ${message}`);
+        }
+    }
+}
+
+// Advanced matching functions
+function calculateStringSimilarity(str1, str2) {
+    str1 = str1.toLowerCase().trim();
+    str2 = str2.toLowerCase().trim();
+    
+    if (str1 === str2) return 1.0;
+    if (str1.length === 0 || str2.length === 0) return 0.0;
+    
+    // Check for exact phrase containment with higher weight
+    if (str1.includes(str2) || str2.includes(str1)) {
+        return 0.9;
+    }
+    
+    // Replace common variations but preserve "need" questions
+    const normalizeText = (text) => {
+        return text
+            .replace(/do you have/g, "have")
+            .replace(/can you/g, "do you")
+            .replace(/will you/g, "do you")
+            .replace(/this|it/, "work")
+            .split(/\s+/);
+    };
+    
+    const words1 = normalizeText(str1);
+    const words2 = normalizeText(str2);
+    
+    // Count matching words and their positions
+    let matchScore = 0;
+    const commonWords = words1.filter(word => {
+        const index = words2.indexOf(word);
+        if (index !== -1) {
+            // Add position-based bonus for words in similar positions
+            const positionDiff = Math.abs(words1.indexOf(word) - index);
+            matchScore += 1 + (1 / (positionDiff + 1));
+            return true;
+        }
+        return false;
+    });
+    
+    // Additional bonus for key terms appearing in both strings
+    const keyTerms = {
+        equipment: ["ramp", "ramps", "lift", "hoist"],
+        weather: ["rain", "raining", "weather", "wet"],
+        service: ["work", "service", "protect", "apply"]
+    };
+    
+    let keyTermBonus = 0;
+    for (const [category, terms] of Object.entries(keyTerms)) {
+        const categoryMatches = terms.filter(term => 
+            str1.includes(term) && str2.includes(term)
+        ).length;
+        if (categoryMatches > 0) {
+            keyTermBonus += 0.3 * (categoryMatches / terms.length);
+        }
+    }
+    
+    // Special bonus for "need" questions matching with appropriate answers
+    if ((str1.includes("need") && str2.includes("need")) ||
+        (str1.includes("have") && str2.includes("have"))) {
+        keyTermBonus += 0.2;
+    }
+    
+    return Math.min(1, (matchScore / Math.max(words1.length, words2.length)) + keyTermBonus);
+}
+
+// Function to get random response from array
+function getRandomResponse(responses) {
+    return responses[Math.floor(Math.random() * responses.length)];
+}
+
+// Function to determine question context
+function getQuestionContext(question) {
+    const q = question.toLowerCase();
+    
+    // Define context patterns
+    const contexts = [
+        { keywords: ['cost', 'price', 'quote', 'expensive', 'cheap'], context: 'pricing' },
+        { keywords: ['rain', 'snow', 'weather', 'storm'], context: 'weather conditions' },
+        { keywords: ['appointment', 'schedule', 'book', 'when'], context: 'scheduling' },
+        { keywords: ['warranty', 'guarantee', 'protection'], context: 'our warranty' },
+        { keywords: ['service', 'process', 'work', 'how'], context: 'our services' },
+        { keywords: ['vehicle', 'car', 'truck', 'equipment'], context: 'vehicle types' }
+    ];
+    
+    for (const {keywords, context} of contexts) {
+        if (keywords.some(k => q.includes(k))) {
+            return context;
+        }
+    }
+    
+    return 'our services'; // Default context
+}
+
+// Function to get bot response based on user input with advanced matching
+function getBotResponse(userInput) {
+    const input = userInput.toLowerCase().trim();
+    debugLog('Processing input:', input);
+    
+    // Store best matches with their scores
+    let matches = [];
+    
+    // Check main Q&A database first
+    for (const item of knowledgeBase.qa) {
+        let bestKeywordScore = 0;
+        let combinedScore = 0;
+        let matchedKeywords = 0;
+        
+        // Check each keyword for this QA pair
+        for (const keyword of item.keywords) {
+            const similarity = calculateStringSimilarity(input, keyword);
+            debugLog(`Keyword match: "${keyword}" -> ${similarity}`);
+            
+            // Track best individual keyword match
+            bestKeywordScore = Math.max(bestKeywordScore, similarity);
+            
+            // If we have a decent match, count it
+            if (similarity > 0.3) {
+                matchedKeywords++;
+                combinedScore += similarity;
+            }
+            
+            // Exact word/phrase match bonus
+            if (input === keyword || input.includes(keyword) || keyword.includes(input)) {
+                bestKeywordScore = Math.max(bestKeywordScore, 0.95);
+            }
+        }
+        
+        // Calculate final score based on multiple factors
+        const finalScore = (bestKeywordScore * 0.8) + // Increased weight for best match
+                         (combinedScore / item.keywords.length * 0.1) + // Reduced weight for average
+                         (matchedKeywords / item.keywords.length * 0.1); // Coverage of keywords
+        
+        debugLog(`Answer score for "${item.keywords[0]}...": ${finalScore}`);
+        
+        if (finalScore > 0.3) {
+            matches.push({
+                answer: item.answer,
+                score: finalScore,
+                type: 'qa',
+                keywords: item.keywords
+            });
+        }
+    }
+    
+    // Check personality responses second (lower priority)
+    for (const item of knowledgeBase.personality) {
+        let bestScore = 0;
+        
+        for (const keyword of item.keywords) {
+            const similarity = calculateStringSimilarity(input, keyword);
+            bestScore = Math.max(bestScore, similarity);
+        }
+        
+        if (bestScore > 0.5) { // Lowered from 0.6
+            matches.push({
+                answer: item.answer,
+                score: bestScore * 0.7, // Adjusted personality score weight
+                type: 'personality',
+                keywords: item.keywords
+            });
+        }
+    }
+    
+    // Sort matches by score
+    matches.sort((a, b) => b.score - a.score);
+    
+    debugLog('All matches:', matches.map(m => ({
+        type: m.type,
+        score: m.score,
+        keywords: m.keywords
+    })));
+    
+    // If we have any good matches, use the best one
+    if (matches.length > 0 && matches[0].score > 0.3) { // Lowered from 0.4
+        debugLog('Selected match:', {
+            type: matches[0].type,
+            score: matches[0].score,
+            keywords: matches[0].keywords
+        });
+        return matches[0].answer;
+    }
+    
+    // Context-aware fallback responses
+    const words = input.split(/\s+/);
+    if (words.length <= 2) {
+        return `*Tilts virtual head* 🤔 Could you tell me more about what you'd like to know? I'm knowledgeable about our rust protection services, pricing, scheduling, and more!`;
+    } else {
+        // Use standard fallbacks for longer queries
+        return getRandomResponse(knowledgeBase.fallbacks);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    debugLog('Initializing chatbot...');
+    
     // Get chatbot elements
     const chatbotButton = document.getElementById('chatbotButton');
     const chatbotContainer = document.getElementById('chatbotContainer');
@@ -9,275 +581,150 @@ document.addEventListener('DOMContentLoaded', function() {
     const chatbotInput = document.getElementById('chatbotInput');
     const chatbotSend = document.getElementById('chatbotSend');
     
-    // Chatbot nickname
-    const botName = "Rusty";
+    // Debug logging for element initialization
+    debugLog('Chatbot elements initialized:', {
+        button: chatbotButton ? 'Found' : 'Missing',
+        container: chatbotContainer ? 'Found' : 'Missing',
+        close: chatbotClose ? 'Found' : 'Missing',
+        messages: chatbotMessages ? 'Found' : 'Missing',
+        input: chatbotInput ? 'Found' : 'Missing',
+        send: chatbotSend ? 'Found' : 'Missing'
+    });
     
-    // Knowledge base for rustproofing information
-    const knowledgeBase = {
-        greetings: [
-            `Hello! I'm ${botName}, your Pro Fleet Care virtual assistant. How can I help you with rustproofing today?`,
-            `Hi there! I'm ${botName}, the rust protection expert for Pro Fleet Care Simcoe County. What would you like to know?`,
-            `Welcome! I'm ${botName}, your guide to all things rust control. How can I assist you today?`
-        ],
-        
-        // Common questions and answers
-        qa: [
-            // About the company
-            {
-                keywords: ["what", "service", "offer", "provide", "do you do"],
-                answer: `Pro Fleet Care Simcoe County provides mobile rust control services. We come to your location to apply our unique two-step rustproofing process that protects vehicles and equipment from corrosion. Our service is convenient, effective, and helps extend the life of your valuable assets.`
-            },
-            {
-                keywords: ["who", "owner", "franchise", "operate"],
-                answer: `Pro Fleet Care Simcoe County is owned and operated by Renee Marchildon and Jan Borkowski. Having owned their own construction business, they understand the importance of quality workmanship and customer service. They're dedicated to serving customers throughout Simcoe County.`
-            },
-            {
-                keywords: ["where", "location", "area", "serve", "coverage"],
-                answer: `We proudly serve all of Simcoe County including Barrie, Orillia, Collingwood, Midland, Bradford, Innisfil, Alliston, Wasaga Beach, and surrounding areas. Our mobile service means we come to your location anywhere in the county.`
-            },
-            {
-                keywords: ["experience", "history", "long", "years"],
-                answer: `Pro Fleet Care has over 35 years of experience in the rust control industry. The company was founded in 1984 by Bob Lawrie and has grown into a franchise network across North America. The Simcoe County franchise brings this extensive experience and proven methods to our local community.`
-            },
-            
-            // About the process
-            {
-                keywords: ["how", "process", "work", "application", "apply"],
-                answer: `Our unique two-step process includes: 1) ROC 40 (a light oil) that penetrates seams and hard-to-reach areas, and 2) ROC 50 (a drip-less oil) that offers extra protection in high traffic areas like frame rails and wheel wells. This comprehensive approach ensures complete protection from undercarriage to roof line.`
-            },
-            {
-                keywords: ["step", "first", "second", "roc 40", "roc 50"],
-                answer: `Our two-step process is what makes Pro Fleet Care unique:\n\nStep 1: ROC 40 is a light oil that penetrates deep into seams, crevices, and hard-to-reach areas. It's ideal for interior panels and enclosed spaces.\n\nStep 2: ROC 50 is a drip-less oil that provides extra protection in high-traffic and exposed areas like frame rails and wheel wells. It creates a durable protective barrier that resists wash-off.`
-            },
-            {
-                keywords: ["area", "protect", "coverage", "where", "parts"],
-                answer: `We protect all vulnerable areas including: undercarriage, fenders, doors and door posts, hood and trunk, roof line, door handles, mirrors, bumper rails, window trim, electrical wiring and components, engine compartment, and more. Our product penetrates hard-to-reach areas, defying gravity to creep upwards, sideways, and downward for complete coverage.`
-            },
-            {
-                keywords: ["mobile", "come to", "on-site", "location"],
-                answer: `Yes! We are a fully mobile service. We come directly to your location, whether it's your home, business, farm, or municipal facility. This eliminates the need for you to transport your vehicles or equipment, saving you time and reducing downtime. We work around your schedule, offering evening and weekend appointments at no additional cost.`
-            },
-            
-            // About pricing and scheduling
-            {
-                keywords: ["cost", "price", "quote", "estimate", "much"],
-                answer: `Pricing depends on the type and size of vehicle or equipment. We'd be happy to provide a free quote! Please call Jan at 705-627-7941 or Renee at 705-627-7521, or fill out our contact form on the website. For every $1 spent on our rust control, customers typically save approximately $6 in reduced repair costs and extended vehicle life.`
-            },
-            {
-                keywords: ["appointment", "schedule", "book", "when"],
-                answer: `To schedule an appointment, please call Jan at 705-627-7941 or Renee at 705-627-7521, or fill out our contact form. We offer flexible scheduling including evenings and weekends at no additional cost. We work around your schedule to minimize disruption to your operations.`
-            },
-            {
-                keywords: ["how long", "time", "take", "duration"],
-                answer: `The application time varies depending on the size and type of vehicle or equipment. On average, a standard vehicle takes approximately 30-45 minutes for the complete two-step application. Larger vehicles or equipment may take longer. We'll provide you with a time estimate when scheduling your appointment.`
-            },
-            {
-                keywords: ["often", "frequency", "how many", "yearly", "annual"],
-                answer: `For optimal protection, we recommend annual applications of our rust control treatment. This is especially important in areas with harsh winters and heavy road salt usage, like Simcoe County. Annual applications ensure continuous protection against corrosion and help extend the lifespan of your vehicles and equipment.`
-            },
-            
-            // About benefits
-            {
-                keywords: ["benefit", "advantage", "why", "should"],
-                answer: `Benefits include: extended vehicle life, reduced repair costs (save $6 for every $1 spent), less downtime (we come to you), protection against salt and moisture, pest repellent properties to prevent rodents from chewing wires, maintained professional appearance, higher resale value, and enhanced safety through preserved structural integrity.`
-            },
-            {
-                keywords: ["different", "better", "unique", "compare", "versus"],
-                answer: `What makes us different: 1) We're mobile - we come to you, 2) Our two-step process ensures comprehensive protection, 3) Our products penetrate hard-to-reach areas that others can't access, 4) Our formula defies gravity, creeping upwards and sideways, 5) It continues to creep and reseal exposed areas, 6) It deters rodents from chewing wires, and 7) Our service providers are local business owners with a vested interest in your satisfaction.`
-            },
-            {
-                keywords: ["save", "saving", "cost reduction", "return", "investment"],
-                answer: `For every $1 spent on Pro Fleet Care rust control, customers save approximately $6 through reduced repair costs, less downtime, extended vehicle/equipment life, and higher resale value. Our service helps prevent costly repairs to body panels, frame components, electrical systems, and mechanical parts that can be damaged by corrosion.`
-            },
-            {
-                keywords: ["warranty", "guarantee", "promise"],
-                answer: `We stand behind the quality of our service. Our rust control treatment typically provides protection for 12 months, which is why we recommend annual applications. If you have any concerns about the application or effectiveness, please contact us directly and we'll make it right.`
-            },
-            
-            // About vehicles and equipment
-            {
-                keywords: ["vehicle", "equipment", "what type", "kind of"],
-                answer: `We service a wide range of vehicles and equipment including: farm equipment (tractors, combines), emergency vehicles (fire trucks, ambulances), passenger transportation (buses, shuttles), recreational vehicles (RVs, campers), snow removal and construction equipment, beach equipment, personal vehicles and trucks, and much more. If it has metal components that need protection from rust, we can service it!`
-            },
-            {
-                keywords: ["farm", "tractor", "agricultural", "equipment"],
-                answer: `We provide specialized rust protection for all types of farm equipment including tractors, combines, plows, tillers, sprayers, spreaders, balers, harvesters, grain handling equipment, and irrigation systems. Our service helps extend equipment life, reduce downtime during critical seasons, and maintain resale value. We come directly to your farm for convenient service.`
-            },
-            {
-                keywords: ["emergency", "fire", "ambulance", "police"],
-                answer: `We provide rust protection for emergency vehicles including fire trucks, pumpers, ambulances, paramedic vehicles, police cruisers, rescue vehicles, and command units. These vehicles must be reliable when needed most, and our protection helps ensure they're ready to respond. Our mobile service means we can come to your fire hall, police station, or emergency services facility.`
-            },
-            {
-                keywords: ["bus", "transit", "school", "passenger"],
-                answer: `We protect passenger transportation vehicles including school buses, transit buses, shuttle vans, taxis, tour buses, and accessible transportation vehicles. These vehicles face constant exposure to road salt and moisture. Our protection helps maintain structural integrity for passenger safety while reducing maintenance costs and extending vehicle lifespan.`
-            },
-            {
-                keywords: ["rv", "recreational", "camper", "trailer"],
-                answer: `We provide rust protection for recreational vehicles including motorhomes, RVs, travel trailers, fifth wheels, campers, pop-ups, boat trailers, ATVs, and snowmobiles. These represent significant investments that are often exposed to harsh conditions. Our mobile service means we can come to your home, storage facility, or campground to provide convenient protection.`
-            },
-            {
-                keywords: ["snow", "plow", "construction", "heavy equipment"],
-                answer: `We protect snow removal and construction equipment including snowplows, salt spreaders, excavators, backhoes, bulldozers, graders, loaders, skid steers, dump trucks, cement mixers, cranes, and lifts. This equipment operates in harsh conditions with constant exposure to salt, moisture, and abrasive materials, making rust protection essential.`
-            },
-            {
-                keywords: ["beach", "water", "salt water", "sand"],
-                answer: `We provide specialized protection for beach equipment including beach cleaning equipment, lifeguard vehicles, beach maintenance vehicles, watercraft, jet skis, boat trailers, and beach access equipment. These face some of the most corrosive conditions with constant exposure to salt water, sand, and sun. Our products create a barrier against these harsh elements.`
-            },
-            
-            // About preparation and aftercare
-            {
-                keywords: ["prepare", "preparation", "before", "ready"],
-                answer: `For best results, your vehicle should be clean and dry before application. However, we understand this isn't always possible, especially for farm and construction equipment. We can work with you to determine the best approach for your specific situation. No special preparation is required on your part.`
-            },
-            {
-                keywords: ["after", "care", "maintenance", "wash", "clean"],
-                answer: `You can use your vehicle immediately after our rust control application. There is no drying or curing time required. However, we recommend avoiding car washes for a few days after application to allow the product to fully penetrate and settle. No special maintenance is required between annual applications.`
-            },
-            {
-                keywords: ["mess", "drip", "clean", "residue"],
-                answer: `Our two-step process is designed to minimize mess. The ROC 50 product used in high-visibility areas is specifically formulated to be drip-less. While there may be some residue immediately after application, it typically dissipates quickly. We take care to apply the product properly to minimize any excess or overspray.`
-            },
-            
-            // About the company and contact
-            {
-                keywords: ["contact", "reach", "call", "phone", "email"],
-                answer: `You can contact Pro Fleet Care Simcoe County by calling Jan at 705-627-7941 or Renee at 705-627-7521. You can also email us at simcoecounty@profleetcare.com or fill out the contact form on our website. We're happy to answer any questions or provide a free quote for your vehicles or equipment.`
-            },
-            {
-                keywords: ["hours", "business", "open", "available"],
-                answer: `Our regular business hours are Monday through Friday from 8:00 AM to 6:00 PM. However, we offer flexible scheduling including evenings and weekends at no additional cost to accommodate your needs. As a mobile service, we come to your location at a time that works best for you.`
-            },
-            {
-                keywords: ["website", "online", "web"],
-                answer: `You're currently on our website! You can explore different sections to learn more about our services, process, industries we serve, and more. You can also fill out our contact form to request a quote or ask questions. If you're looking for the main Pro Fleet Care corporate website, you can visit profleetcare.com.`
-            },
-            
-            // About rust and corrosion
-            {
-                keywords: ["rust", "cause", "why", "happen", "corrosion"],
-                answer: `Rust (iron oxide) forms when iron or steel is exposed to oxygen and moisture over time. This process is accelerated by salt, chemicals, and environmental factors. In Simcoe County, vehicles and equipment are particularly vulnerable due to road salt in winter, moisture from rain and snow, and agricultural or industrial chemicals. Rust weakens metal components and can lead to structural failure if left untreated.`
-            },
-            {
-                keywords: ["salt", "winter", "road salt", "damage"],
-                answer: `Road salt is one of the biggest contributors to vehicle and equipment corrosion. Salt lowers the freezing point of water, creating a brine solution that accelerates the rusting process. It can get trapped in seams and crevices, causing corrosion from the inside out. Our rust control products neutralize these effects by displacing moisture and creating a protective barrier.`
-            },
-            {
-                keywords: ["prevent", "stop", "avoid", "protect"],
-                answer: `The best way to prevent rust is through regular protective treatments like our two-step rust control process. Other preventive measures include regular washing (especially in winter), keeping vehicles stored in dry locations when possible, promptly repairing paint chips or scratches, and avoiding prolonged exposure to salt and moisture. Our mobile service makes regular protection convenient and effective.`
-            },
-            
-            // Miscellaneous
-            {
-                keywords: ["thanks", "thank you", "appreciate", "helpful"],
-                answer: `You're welcome! I'm happy to help. If you have any other questions about Pro Fleet Care's rust control services, feel free to ask. You can also contact Jan at 705-627-7941 or Renee at 705-627-7521 for personalized assistance or to schedule an appointment.`
-            },
-            {
-                keywords: ["who are you", "your name", "chatbot", "bot"],
-                answer: `I'm ${botName}, Pro Fleet Care Simcoe County's virtual assistant! I'm here to answer your questions about our rust control services, process, and benefits. While I can provide information, for personalized quotes or to schedule service, please contact Jan at 705-627-7941 or Renee at 705-627-7521.`
-            },
-            {
-                keywords: ["hello", "hi", "hey", "greetings"],
-                answer: `Hello! I'm ${botName}, your Pro Fleet Care virtual assistant. I'm here to answer your questions about our rust control services. How can I help you today?`
+    function toggleChatbot(show) {
+        debugLog(`Toggling chatbot ${show ? 'open' : 'closed'}`);
+        if (show) {
+            chatbotContainer.classList.add('visible');
+            // Add welcome message if it's the first time opening
+            if (chatbotMessages.children.length === 0) {
+                debugLog('Adding welcome message');
+                addBotMessage(getRandomResponse(knowledgeBase.greetings));
             }
-        ],
-        
-        // Fallback responses when no match is found
-        fallbacks: [
-            `I'm not sure I understand that question. As ${botName}, I'm most knowledgeable about Pro Fleet Care's rust control services. Could you rephrase or ask something about rustproofing, our process, or the benefits?`,
-            `I don't have specific information about that. Would you like to speak with one of our owners? Call Jan at 705-627-7941 or Renee at 705-627-7521 for personalized assistance.`,
-            `That's a great question! For more detailed information on that topic, please contact our team directly at 705-627-7941 (Jan) or 705-627-7521 (Renee), or fill out our contact form.`,
-            `As ${botName}, I'm still learning! For the most accurate information on that topic, I'd recommend calling Jan at 705-627-7941 or Renee at 705-627-7521. They'd be happy to help you.`
-        ]
-    };
+        } else {
+            chatbotContainer.classList.remove('visible');
+        }
+    }
     
     // Toggle chatbot visibility
     if (chatbotButton && chatbotContainer && chatbotClose) {
-        chatbotButton.addEventListener('click', function() {
-            chatbotContainer.style.display = 'block';
-            // Add welcome message if it's the first time opening
-            if (chatbotMessages.children.length === 0) {
-                addBotMessage(getRandomResponse(knowledgeBase.greetings));
+        debugLog('Setting up click handlers');
+        
+        // Button click handler
+        chatbotButton.addEventListener('click', function(event) {
+            debugLog('Chatbot button clicked');
+            event.preventDefault();
+            event.stopPropagation();
+            toggleChatbot(true);
+        });
+        
+        // Close button handler
+        chatbotClose.addEventListener('click', function(event) {
+            debugLog('Close button clicked');
+            event.preventDefault();
+            event.stopPropagation();
+            toggleChatbot(false);
+        });
+        
+        // Click outside to close
+        document.addEventListener('click', function(event) {
+            if (!chatbotContainer.contains(event.target) && 
+                !chatbotButton.contains(event.target) && 
+                chatbotContainer.classList.contains('visible')) {
+                debugLog('Clicked outside chatbot');
+                toggleChatbot(false);
             }
         });
-        
-        chatbotClose.addEventListener('click', function() {
-            chatbotContainer.style.display = 'none';
+    } else {
+        console.error('Missing required chatbot elements:', {
+            button: !chatbotButton,
+            container: !chatbotContainer,
+            close: !chatbotClose
         });
     }
     
-    // Send message functionality
-    if (chatbotInput && chatbotSend && chatbotMessages) {
-        // Send on button click
-        chatbotSend.addEventListener('click', sendMessage);
-        
-        // Send on Enter key
-        chatbotInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        });
-    }
-    
-    // Function to send message
-    function sendMessage() {
-        const message = chatbotInput.value.trim();
-        if (message === '') return;
-        
-        // Add user message to chat
-        addUserMessage(message);
-        
-        // Clear input
-        chatbotInput.value = '';
-        
-        // Get bot response after a short delay (simulates thinking)
-        setTimeout(function() {
-            const response = getBotResponse(message);
-            addBotMessage(response);
-        }, 500);
-    }
-    
-    // Function to add user message to chat
-    function addUserMessage(message) {
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('user-message');
-        messageElement.innerHTML = `<p>${message}</p>`;
-        chatbotMessages.appendChild(messageElement);
-        
-        // Scroll to bottom
-        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-    }
-    
-    // Function to add bot message to chat
-    function addBotMessage(message) {
+    // Function to add bot message with enhanced features
+    function addBotMessage(message, userQuestion = '') {
         const messageElement = document.createElement('div');
         messageElement.classList.add('bot-message');
-        messageElement.innerHTML = `<p><strong>${botName}:</strong> ${message}</p>`;
+        
+        // Enhanced question display with context
+        let questionPart = '';
+        if (userQuestion) {
+            const questionContext = getQuestionContext(userQuestion);
+            questionPart = `
+                <div class="user-question">
+                    <div class="question-header">
+                        💭 <strong>You asked about ${questionContext}:</strong>
+                    </div>
+                    <div class="question-text">"${userQuestion}"</div>
+                </div>`;
+        }
+        
+        messageElement.innerHTML = `${questionPart}<p class="bot-response"><strong>${botName}:</strong> ${message}</p>`;
         chatbotMessages.appendChild(messageElement);
         
-        // Scroll to bottom
-        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        // Scroll to bottom with smooth animation
+        chatbotMessages.scrollTo({
+            top: chatbotMessages.scrollHeight,
+            behavior: 'smooth'
+        });
     }
-    
-    // Function to get bot response based on user input
-    function getBotResponse(userInput) {
-        // Convert to lowercase for easier matching
-        const input = userInput.toLowerCase();
+
+    // Add input and send functionality
+    if (chatbotInput && chatbotSend) {
+        debugLog('Setting up input handlers');
         
-        // Check for matches in knowledge base
-        for (const item of knowledgeBase.qa) {
-            // Check if any keywords match
-            if (item.keywords.some(keyword => input.includes(keyword.toLowerCase()))) {
-                return item.answer;
+        // Send message function
+        function sendMessage() {
+            const userInput = chatbotInput.value.trim();
+            debugLog('Attempting to send message:', userInput);
+            
+            if (userInput) {
+                try {
+                    debugLog('Getting bot response');
+                    const botResponse = getBotResponse(userInput);
+                    debugLog('Bot response:', botResponse);
+                    
+                    debugLog('Adding message to chat');
+                    addBotMessage(botResponse, userInput);
+                    
+                    debugLog('Clearing input');
+                    chatbotInput.value = '';
+                } catch (error) {
+                    console.error('Error processing message:', error);
+                    debugLog('Error in message processing:', error);
+                }
+            } else {
+                debugLog('Empty input, not sending');
             }
         }
         
-        // If no match found, return random fallback
-        return getRandomResponse(knowledgeBase.fallbacks);
-    }
-    
-    // Function to get random response from array
-    function getRandomResponse(responses) {
-        const randomIndex = Math.floor(Math.random() * responses.length);
-        return responses[randomIndex];
+        // Send message when clicking send button
+        chatbotSend.addEventListener('click', function(event) {
+            debugLog('Send button clicked');
+            event.preventDefault();
+            sendMessage();
+        });
+        
+        // Send message when pressing Enter
+        chatbotInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                debugLog('Enter key pressed');
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        // Focus input when chatbot opens
+        chatbotContainer.addEventListener('transitionend', function() {
+            if (chatbotContainer.classList.contains('visible')) {
+                chatbotInput.focus();
+            }
+        });
+    } else {
+        console.error('Missing input or send button:', {
+            input: !chatbotInput,
+            send: !chatbotSend
+        });
     }
 });
